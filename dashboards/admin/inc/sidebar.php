@@ -28,6 +28,12 @@
                   Reservations
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link <?= ($activePage == 'categories') ? 'active' : '' ?>" href="categories.php">
+                  <span data-feather="check-square"></span>
+                  Categories
+                </a>
+              </li>
             </ul>
           </div>
         </nav>
