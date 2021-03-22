@@ -1,0 +1,2 @@
+<?php include 'students.php' ?>
+
