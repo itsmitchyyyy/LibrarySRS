@@ -1,130 +1,126 @@
 <?php include 'inc/header.php' ?>
 <?php include 'inc/sidebar.php' ?>
-<h2>Students</h2>
+<?php include '../../db/connection.php' ?>
+
+<div class="d-flex flex-row py-4">
+  <div class="d-flex flex-fill">
+    <h2>Students</h2>
+  </div>
+
+ 
+
+  <div class="d-flex flex-fill justify-content-end">
+      <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-sm btn-primary">
+        <i class="fas fa-user-plus"></i> Add Student
+      </button>
+  </div>
+</div>
+
+<?php
+if(isset($_GET['e']) || isset($_GET['m'])) { ?>
+  <div class="alert <?php echo (isset($_GET['e'])) ? 'alert-danger' : 'alert-success'?> w-25" role="alert">
+    <?php echo (isset($_GET['e'])) ? $_GET['e'] : $_GET['m'] ?>
+</div>
+<?php }
+
+?>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Student</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="idNumber">ID Number</label>
+          <input type="text" name="idNumber" class="form-control" id="idNumberInput" aria-describedby="idNumberHelp">
+        </div>
+        <div class="form-group">
+          <label for="emailAddress">Email Address</label>
+          <input type="email" name="emailAddress" class="form-control" id="emailAddressInput" aria-describedby="emailAddressHelp">
+        </div>
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" name="firstName" class="form-control" id="firstNameInput" aria-describedby="firstNameHelp">
+        </div>
+        <div class="form-group">
+          <label for="middleName">Middle Name</label>
+          <input type="text" name="middleName" class="form-control" id="middleNameInput" aria-describedby="middleNameHelp">
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" name="lastName" class="form-control" id="lastNameInput" aria-describedby="lastNameHelp">
+        </div>
+        <div class="form-group">
+          <label for="contactNumber">Contact Number</label>
+          <input type="text" name="contactNumber" class="form-control" id="contactNumberInput" aria-describedby="contactNumberHelp">
+        </div>
+        <div class="form-group">
+          <label for="course">Course</label>
+          <input type="text" name="course" class="form-control" id="courseInput" aria-describedby="courseHelp">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input type="submit" name="addStudentBtn" class="btn btn-primary" value="Add Student" />
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<?php
+  if (isset($_POST['addStudentBtn'])) {
+    $student = addUser(array($_POST['idNumber'],$_POST['emailAddress'],$_POST['firstName'],$_POST['middleName'],$_POST['lastName'],$_POST['contactNumber'],$_POST['course']), 
+    array('id_number','email','first_name','middle_name','last_name','contact_number','course'), 'students', array($_POST['emailAddress'], $_POST['idNumber']));
+
+    if ($student == 'emailexist') {
+      echo "<script> alert('Email Exist'); </script>";
+    } else if ($student == 'idnumberexist') {
+      echo "<script> alert('Id Number Exist'); </script>";
+    } else {
+      if ($student) {
+        echo "<script> window.location = document.referrer; </script>";
+      }
+    }
+  }
+
+
+  $studentList = getRecords('students');
+?>
+<!-- end Modal -->
+
           <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
+                  <th>ID Number</th>
+                  <th>Student Name</th>
+                  <th>Contact Number</th>
+                  <th>Course</th>
+                  <th>Email</th>
+                  <th>Option</th>
                 </tr>
               </thead>
               <tbody>
+              <?php foreach($studentList as $student) { ?>
                 <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
+                  <td><?php echo $student['id_number'] ?></td>
+                  <td><?php echo "{$student['first_name']} {$student['middle_name']}. {$student['last_name']}" ?></td>
+                  <td><?php echo $student['contact_number'] ?></td>
+                  <td><?php echo $student['course'] ?></td>
+                  <td><?php echo $student['email'] ?></td>
+                  <td>
+                    <a href="edit-student.php?id=<?php echo $student['id'] ?>" class="btn btn-primary">Update</a>
+                  </td>
                 </tr>
-                <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>Integer</td>
-                  <td>nec</td>
-                  <td>odio</td>
-                  <td>Praesent</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>libero</td>
-                  <td>Sed</td>
-                  <td>cursus</td>
-                  <td>ante</td>
-                </tr>
-                <tr>
-                  <td>1,004</td>
-                  <td>dapibus</td>
-                  <td>diam</td>
-                  <td>Sed</td>
-                  <td>nisi</td>
-                </tr>
-                <tr>
-                  <td>1,005</td>
-                  <td>Nulla</td>
-                  <td>quis</td>
-                  <td>sem</td>
-                  <td>at</td>
-                </tr>
-                <tr>
-                  <td>1,006</td>
-                  <td>nibh</td>
-                  <td>elementum</td>
-                  <td>imperdiet</td>
-                  <td>Duis</td>
-                </tr>
-                <tr>
-                  <td>1,007</td>
-                  <td>sagittis</td>
-                  <td>ipsum</td>
-                  <td>Praesent</td>
-                  <td>mauris</td>
-                </tr>
-                <tr>
-                  <td>1,008</td>
-                  <td>Fusce</td>
-                  <td>nec</td>
-                  <td>tellus</td>
-                  <td>sed</td>
-                </tr>
-                <tr>
-                  <td>1,009</td>
-                  <td>augue</td>
-                  <td>semper</td>
-                  <td>porta</td>
-                  <td>Mauris</td>
-                </tr>
-                <tr>
-                  <td>1,010</td>
-                  <td>massa</td>
-                  <td>Vestibulum</td>
-                  <td>lacinia</td>
-                  <td>arcu</td>
-                </tr>
-                <tr>
-                  <td>1,011</td>
-                  <td>eget</td>
-                  <td>nulla</td>
-                  <td>Class</td>
-                  <td>aptent</td>
-                </tr>
-                <tr>
-                  <td>1,012</td>
-                  <td>taciti</td>
-                  <td>sociosqu</td>
-                  <td>ad</td>
-                  <td>litora</td>
-                </tr>
-                <tr>
-                  <td>1,013</td>
-                  <td>torquent</td>
-                  <td>per</td>
-                  <td>conubia</td>
-                  <td>nostra</td>
-                </tr>
-                <tr>
-                  <td>1,014</td>
-                  <td>per</td>
-                  <td>inceptos</td>
-                  <td>himenaeos</td>
-                  <td>Curabitur</td>
-                </tr>
-                <tr>
-                  <td>1,015</td>
-                  <td>sodales</td>
-                  <td>ligula</td>
-                  <td>in</td>
-                  <td>libero</td>
-                </tr>
+              <?php } ?>
               </tbody>
             </table>
           </div>
