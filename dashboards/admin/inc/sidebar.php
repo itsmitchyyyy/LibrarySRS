@@ -11,13 +11,13 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?= ($activePage == 'students') ? 'active' : '' ?>" href="students.php">
+                <a class="nav-link <?= (strpos($activePage, 'student') !== false) ? 'active' : '' ?>" href="students.php">
                   <span data-feather="users"></span>
                   Students 
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?= ($activePage == 'teachers') ? 'active' : '' ?>" href="teachers.php">
+                <a class="nav-link <?= (strpos($activePage, 'teacher') !== false) ? 'active' : '' ?>" href="teachers.php">
                   <span data-feather="users"></span>
                   Teachers
                 </a>
