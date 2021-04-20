@@ -1,4 +1,30 @@
 <?php
+
+function time_elapsed_string($time) {
+    $time_difference = time() - $time;
+
+    if( $time_difference < 1 ) { return 'less than 1 second ago'; }
+    $condition = array( 12 * 30 * 24 * 60 * 60 =>  'year',
+                30 * 24 * 60 * 60       =>  'month',
+                24 * 60 * 60            =>  'day',
+                60 * 60                 =>  'hour',
+                60                      =>  'minute',
+                1                       =>  'second'
+    );
+
+    foreach( $condition as $secs => $str )
+    {
+        $d = $time_difference / $secs;
+
+        if( $d >= 1 )
+        {
+            $t = round( $d );
+            return 'about ' . $t . ' ' . $str . ( $t > 1 ? 's' : '' ) . ' ago';
+        }
+    }
+}
+
+
 function connect() {
     try {
         return new PDO("mysql:host=localhost;dbname=librarysrs","root","");
@@ -17,6 +43,7 @@ function loginAdmin($username, $password) {
     if($stmt->rowCount() > 0){
         if (password_verify($password, $row['password'])) {
             $_SESSION['user'] = $row;
+            $_SESSION['role'] = 'admin';
             echo "<script> window.location='dashboards/admin/index.php'; </script>";
         } else {
             echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
@@ -50,6 +77,16 @@ function getRecords($table){
     return $row;
 }
 
+function getRecordsWithCondition($table, $field, $condition){
+    $conn = connect();
+    $sql = "SELECT * FROM $table WHERE $field = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(array($condition));
+    $row = $stmt->fetchAll();
+
+    return $row;
+}
+
 function getRecord($table, $field, $id) {
     $conn = connect();
     $sql = "SELECT * FROM $table WHERE $field = ?";
@@ -60,7 +97,7 @@ function getRecord($table, $field, $id) {
     return $row;
 }
 
-function addUser($data, $fields, $table, $fieldCheckData = null) {
+function addUser($data, $fields, $table, $fieldCheckData = null, $role = 'students') {
     $conn = connect();
     if ($fieldCheckData) {
         $isExist = getRecord($table, 'email', $fieldCheckData[0]);
@@ -82,8 +119,11 @@ function addUser($data, $fields, $table, $fieldCheckData = null) {
     $stmt->execute(array($lastInsertId));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $userId = addRecord(array($row['id_number']), array('username'), 'users');
-    return addRecord(array($userId,3), array('user_id','role_id'), 'role_user');
+    $password = password_hash($row['id_number'], PASSWORD_DEFAULT);
+    $userId = addRecord(array($row['id_number'], $password), array('username','password'), 'users');
+
+    $roleId = ($role == 'students') ? 4 : (($role == 'teachers') ? 3 : (($role == 'staff') ? 2 : 1)); 
+    return addRecord(array($userId,$roleId), array('user_id','role_id'), 'role_user');
 }
 
 

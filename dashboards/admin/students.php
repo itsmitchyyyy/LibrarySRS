@@ -92,7 +92,7 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
   }
 
 
-  $studentList = getRecords('students');
+  $studentList = getRecordsWithCondition('students','status','active');
 ?>
 <!-- end Modal -->
 
@@ -118,15 +118,61 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                   <td><?php echo $student['email'] ?></td>
                   <td>
                     <a href="edit-student.php?id=<?php echo $student['id'] ?>" class="btn btn-primary">Update</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#deleteStudentModal" data-id="<?php echo $student['id'] ?>" class="btn btn-danger">Delete</a>
                   </td>
                 </tr>
               <?php } ?>
               </tbody>
             </table>
           </div>
+
+
+          
+<!-- delete modal -->
+<div class="modal fade" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Student</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post">
+      <div class="modal-body">
+        <p>Are you sure you want to delete this student?</p>
+        <input type="hidden" name="studentId" value="0" id="studentId">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <input type="submit" name="deleteStudentBtn" class="btn btn-danger" value="Delete Student" />
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- end modal -->
+
+<?php
+  if (isset($_POST['deleteStudentBtn'])) {
+    $student =  updateRecord(array('disabled',$_POST['studentId']),array('status'),'students','id');
+   
+    if ($student) {
+        echo "<script> window.location = 'students.php?m=Deleted Students'; </script>";
+    }
+  }
+?>
 </main>
 </div>
 </div>
 
 
+<script>
+  var deleteStudentModal = document.getElementById('deleteStudentModal');
+  deleteStudentModal.addEventListener('show.bs.modal', function (event) {
+        var studentId = event.relatedTarget.getAttribute('data-id');
+        var studentIdInput = deleteStudentModal.querySelector('#studentId');
+        studentIdInput.value = studentId;
+    });
+</script>
 <?php include 'inc/footer.php' ?>

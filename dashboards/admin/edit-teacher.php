@@ -16,7 +16,7 @@
 <!-- end Modal -->
 
 <div class="w-25">
-<form>
+<form method="post">
 <div class="form-group">
           <label for="idNumber">ID Number</label>
           <input type="text" value="<?php echo $teacher['id_number']; ?>" name="idNumber" class="form-control" id="idNumberInput" aria-describedby="idNumberHelp">
@@ -47,10 +47,22 @@
         </div>
         <div class="d-flex flex-row flex-fill justify-content-end">
         <button type="submit" class="mr-1 btn btn-secondary">Cancel</button>
-        <button type="submit" class="ml-1 btn btn-primary">Update</button>
+        <input type="submit" value="Update" name="updateTeacherBtn" class="ml-1 btn btn-primary" />
     
         </div>
 </form>
+
+
+<?php
+  if (isset($_POST['updateTeacherBtn'])) {
+    $student = updateRecord(array($_POST['idNumber'],$_POST['emailAddress'],$_POST['firstName'],$_POST['middleName'],$_POST['lastName'],$_POST['contactNumber'],$_POST['department'], $_GET['id'])
+    ,array('id_number','email','first_name','middle_name','last_name','contact_number','department'),'teachers','id');
+
+      if ($student) {
+        echo "<script> window.location = 'teachers.php?m=Updated Teacher'; </script>";
+    }
+  }
+?>
 </div>
 
 </main>

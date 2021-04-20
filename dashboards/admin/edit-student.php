@@ -58,7 +58,6 @@
     $student = updateRecord(array($_POST['idNumber'],$_POST['emailAddress'],$_POST['firstName'],$_POST['middleName'],$_POST['lastName'],$_POST['contactNumber'],$_POST['course'], $_GET['id'])
     ,array('id_number','email','first_name','middle_name','last_name','contact_number','course'),'students','id');
 
-echo $student;
       if ($student) {
         echo "<script> window.location = 'students.php?m=Updated Student'; </script>";
     }
