@@ -53,10 +53,12 @@ function loginAdmin($username, $password) {
     }
 }
 
+
+
 function loginStudent($username, $password) {
     $conn = connect();
     $sql = "SELECT *, students.id as studentId, users.id as userId, users.created_at as userCreatedAt, users.updated_at as userUpdatedAt,
-     students.created_at as studentcreatedAt, students.updated_at as studentUpdatedAt FROM users JOIN students ON students.id = users.role_id WHERE username = ?";
+     students.created_at as studentcreatedAt, students.updated_at as studentUpdatedAt FROM users JOIN students ON students.id = users.role_id WHERE users.username = ?";
     $stmt = $conn->prepare($sql);
     $stmt->execute(array($username));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -72,6 +74,16 @@ function loginStudent($username, $password) {
     }else{
         echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
     }
+}
+
+function getStudent($id) {
+    $conn = connect();
+    $sql = "SELECT *, students.id as studentId, users.id as userId, users.created_at as userCreatedAt, users.updated_at as userUpdatedAt,
+     students.created_at as studentcreatedAt, students.updated_at as studentUpdatedAt FROM users JOIN students ON students.id = users.role_id WHERE users.id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(array($id));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row;
 }
 
 function addRecord($data,$fields,$table){
