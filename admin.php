@@ -1,5 +1,4 @@
 <?php include 'inc/header.php' ?>
-<?php require 'db/connection.php' ?>
 
 <main class="justify-content-center d-flex align-items-center h-100">
     <form method="post" class="w-25" method="post">

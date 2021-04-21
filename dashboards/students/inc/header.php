@@ -79,7 +79,8 @@ session_start();
             <?php echo $_SESSION['user']['first_name'] ?>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+            <li><a class="dropdown-item" href="transactions.php">Transactions</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signOutModal">Logout</a></li>
           </ul>

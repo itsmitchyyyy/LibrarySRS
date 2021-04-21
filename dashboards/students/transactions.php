@@ -1,27 +1,23 @@
 <?php include 'inc/header.php' ?>
-<?php include 'inc/sidebar.php' ?>
 <?php include '../../db/connection.php' ?>
 
 <?php
-$borrowedList = getRecords('reservations');
+$borrowedList = getRecordsWithCondition('reservations','user_id', $_SESSION['user']['userId']);
 ?>
-<div class="d-flex flex-row py-4">
-  <div class="d-flex flex-fill">
-    <h2>Reservations</h2>
-  </div>
-</div>
 
+<div class="container h-100 p-4">
+
+<h4>Transaction List</h4>
 
 <?php
 if(isset($_GET['e']) || isset($_GET['m'])) { ?>
-  <div class="alert <?php echo (isset($_GET['e'])) ? 'alert-danger' : 'alert-success'?> w-25" role="alert">
+  <div class="alert <?php echo (isset($_GET['e'])) ? 'alert-danger' : 'alert-success'?> w-25 my-4 ms-auto me-auto w-50" role="alert">
     <?php echo (isset($_GET['e'])) ? $_GET['e'] : $_GET['m'] ?>
 </div>
 <?php }
 
 ?>
-
-          <div class="table-responsive">
+       <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
@@ -29,26 +25,26 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                   <th>Title</th>
                   <th>Author</th>
                   <th>Status</th>
-                  <th>Date Approved</th>
+                  <th>Approved Date</th>
+                  <th>Returned Date</th>
                   <th>Options</th>
                 </tr>
               </thead>
               <tbody>
               <?php foreach($borrowedList as $borrowed) { ?>
-              <?php $user = getRecord('users', 'id', $borrowed['user_id']) ?>
-              <?php $borrower = getRecord($user['role'], 'id', $user['role_id']); ?>
               <?php $book = getRecord('books', 'id', $borrowed['book_id']); ?>
                 <tr>
                   <td><?php echo $book['id']?></td>
                   <td><?php echo $book['ddc'] ?></td>
                   <td><?php echo $book['author'] ?></td>
-                  <td><?php echo date_format(date_create($borrowed['created_at']), 'F d, Y'); ?></td>
                   <td><?php echo $borrowed['status'] ?></td>
+                  <td><?php echo date_format(date_create($borrowed['approved_date']), 'F d, Y'); ?></td>
+                  <td><?php echo date_format(date_create($borrowed['return_date']), 'F d, Y'); ?></td>
                   <td>
                     <form method="post">
-                      <input type="hidden" value="approved" name="borrowedStatus">
+                      <input type="hidden" value="returned" name="borrowedStatus">
                       <input type="hidden" value="<?php echo $borrowed['id'] ?>" name="borrowedId">
-                      <input type="submit" name="approvedBtn" value="Approve" class="btn btn-success btn-sm">
+                      <input type="submit" <?php echo ($borrowed['status'] == 'returned') ? 'disabled': '' ?>  name="approvedBtn" value="Return" class="btn btn-primary btn-sm">
                     </form>
                   </td>
                 </tr>
@@ -56,21 +52,18 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
               </tbody>
             </table>
           </div>
-</main>
-</div>
-</div>
+          </div>
 
 
-<?php
+          <?php
   if (isset($_POST['approvedBtn'])) {
     $book =  updateRecord(array($_POST['borrowedStatus'], date('Y-m-d H:i:s'), $_POST['borrowedId'])
-    ,array('status','approved_date'),'reservations','id');
+    ,array('status','return_date'),'reservations','id');
     
     if ($book) {
-        echo "<script> window.location = 'reservations.php?m=Updated Reservation'; </script>";
+        echo "<script> window.location = 'transactions.php?m=Updated Transactions'; </script>";
     }
   }
 ?>
-
 
 <?php include 'inc/footer.php' ?>
