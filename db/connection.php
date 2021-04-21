@@ -1,5 +1,4 @@
 <?php
-
 function time_elapsed_string($time) {
     $time_difference = time() - $time;
 
@@ -45,6 +44,28 @@ function loginAdmin($username, $password) {
             $_SESSION['user'] = $row;
             $_SESSION['role'] = 'admin';
             echo "<script> window.location='dashboards/admin/index.php'; </script>";
+            exit;
+        } else {
+            echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+        }
+    }else{
+        echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+    }
+}
+
+function loginStudent($username, $password) {
+    $conn = connect();
+    $sql = "SELECT *, students.id as studentId, users.id as userId, users.created_at as userCreatedAt, users.updated_at as userUpdatedAt,
+     students.created_at as studentcreatedAt, students.updated_at as studentUpdatedAt FROM users JOIN students ON students.id = users.role_id WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(array($username));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($stmt->rowCount() > 0){
+        if (password_verify($password, $row['password'])) {
+            $_SESSION['user'] = $row;
+            $_SESSION['role'] = 'student';
+            echo "<script> window.location='dashboards/students/index.php'; </script>"; 
+            exit;
         } else {
             echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
         }
@@ -120,10 +141,7 @@ function addUser($data, $fields, $table, $fieldCheckData = null, $role = 'studen
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $password = password_hash($row['id_number'], PASSWORD_DEFAULT);
-    $userId = addRecord(array($row['id_number'], $password), array('username','password'), 'users');
-
-    $roleId = ($role == 'students') ? 4 : (($role == 'teachers') ? 3 : (($role == 'staff') ? 2 : 1)); 
-    return addRecord(array($userId,$roleId), array('user_id','role_id'), 'role_user');
+    return addRecord(array($row['id_number'], $password, $role, $lastInsertId), array('username','password','role','role_id'), 'users');
 }
 
 

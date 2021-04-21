@@ -1,3 +1,7 @@
+
+<?php session_start() ?>
+<?php require 'db/connection.php' ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,11 +95,11 @@
                         </div>
                         <div class="col p-0">
                             <div class="loginRightFormContainer align-items-center">
-                                <form class="w-50" method="post" action="db/functions/login.php">
+                                <form class="w-50" method="post">
                                     <div class="d-flex justify-content-center mb-5"><h4>Member Login</h4></div>
                                     <div class="form-floating mb-3">
-                                        <input type="email" name="email" class="form-control form-control-sm" id="floatingInput" placeholder="name@example.com">
-                                        <label for="floatingInput">Email address</label>
+                                        <input type="text" name="username" class="form-control form-control-sm" id="floatingInput" placeholder="name@example.com">
+                                        <label for="floatingInput">Username</label>
                                     </div>
                                     <div class="form-floating">
                                         <input type="password" name="password" class="form-control form-control-sm" id="floatingPassword" placeholder="Password">
@@ -120,6 +124,14 @@
         </div>
     </div>
 </div>
+
+
+<?php
+    if (isset($_POST['loginBtn'])) {
+        loginStudent($_POST['username'], $_POST['password']);
+    }
+
+?>
 
 
 
