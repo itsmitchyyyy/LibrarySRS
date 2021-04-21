@@ -77,7 +77,7 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 <?php
   if (isset($_POST['borrowBookBtn'])) {
     $books = addRecord(array($_POST['userId'],$_POST['bookId'],'pending'), 
-    array('user_id','user_id','status'), 'reservations');
+    array('user_id','book_id','status'), 'reservations');
 
     if ($books) {
       echo "<script> window.location = 'index.php?m=Success Borrow Book'; </script>";
