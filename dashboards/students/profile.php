@@ -82,7 +82,6 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 
             $profile = updateRecord(array($password, $_SESSION['user']['userId'])
                 ,array('password'),'users','id');
-            
         }
     } else {
         $profile = updateRecord(array($_POST['firstName'],$_POST['middleName'],$_POST['lastName'],$_POST['contactNumber'],$_POST['course'], $_SESSION['user']['studentId'])
