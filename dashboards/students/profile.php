@@ -48,15 +48,15 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                 <hr />
                 <div class="form-group my-1">
                     <label for="course">Old Password</label>
-                    <input type="text"   name="password" class="form-control" id="courseInput" aria-describedby="courseHelp">
+                    <input type="password"   name="password" class="form-control" id="courseInput" aria-describedby="courseHelp">
                 </div>
                 <div class="form-group my-1">
                     <label for="course">New Password</label>
-                    <input type="text"  name="newPassword" class="form-control" id="courseInput" aria-describedby="courseHelp">
+                    <input type="password"  name="newPassword" class="form-control" id="courseInput" aria-describedby="courseHelp">
                 </div>
                 <div class="form-group my-1">
                     <label for="course">Repeat New Password</label>
-                    <input type="text"  name="repeatNewPassword" class="form-control" id="courseInput" aria-describedby="courseHelp">
+                    <input type="password"  name="repeatNewPassword" class="form-control" id="courseInput" aria-describedby="courseHelp">
                 </div>
             </div>
             <div class="card-footer">
@@ -72,18 +72,16 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 <?php
   if (isset($_POST['updateProfile'])) {
     if ($_POST['password'] != '') {
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $password = password_hash($_POST['newPassword'], PASSWORD_DEFAULT);
         if ($_POST['newPassword'] != $_POST['repeatNewPassword']) {
             echo "<script> window.location = 'profile.php?e=Password does not match'; </script>";
             exit;
         } else {
-            $profile = updateRecord(array($_POST['firstName'],$_POST['middleName'],$_POST['lastName'],$_POST['contactNumber'],$_POST['course'], $_SESSION['user']['studentId'])
+            updateRecord(array($_POST['firstName'],$_POST['middleName'],$_POST['lastName'],$_POST['contactNumber'],$_POST['course'], $_SESSION['user']['studentId'])
             ,array('first_name','middle_name','last_name','contact_number','course'),'students','id');
 
-            if ($profile) {
-                updateRecord(array($password, $_SESSION['user']['userId'])
+            $profile = updateRecord(array($password, $_SESSION['user']['userId'])
                 ,array('password'),'users','id');
-            }
         }
     } else {
         $profile = updateRecord(array($_POST['firstName'],$_POST['middleName'],$_POST['lastName'],$_POST['contactNumber'],$_POST['course'], $_SESSION['user']['studentId'])

@@ -145,7 +145,7 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 
 
 <script>
-    var url = 'http://localhost/librarysrs/db/functions';
+    var url = 'http://localhost/librarysrs-master/db/functions';
     var viewBookModal = document.getElementById('viewBookModal');
     var borrowBookModal = document.getElementById('borrowBookModal');
     var searchBookInput = document.getElementById('searchBook');

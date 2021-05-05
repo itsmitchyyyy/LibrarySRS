@@ -29,7 +29,7 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                   <th>Title</th>
                   <th>Author</th>
                   <th>Status</th>
-                  <th>Date Approved</th>
+                  <th>Date Borrowed</th>
                   <th>Options</th>
                 </tr>
               </thead>
@@ -42,8 +42,8 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                   <td><?php echo $book['id']?></td>
                   <td><?php echo $book['ddc'] ?></td>
                   <td><?php echo $book['author'] ?></td>
-                  <td><?php echo date_format(date_create($borrowed['created_at']), 'F d, Y'); ?></td>
                   <td><?php echo $borrowed['status'] ?></td>
+                  <td><?php echo date_format(date_create($borrowed['created_at']), 'F d, Y'); ?></td>
                   <td>
                     <form method="post">
                       <input type="hidden" value="approved" name="borrowedStatus">

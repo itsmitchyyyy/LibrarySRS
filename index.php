@@ -8,7 +8,11 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active" data-bs-interval="3000">
+<<<<<<< HEAD
+      <img src="assets/img/WIN_20210123_10_53_59_Pro.jpg" class="d-block w-100" alt="Carousel 1">
+=======
       <img src="assets/img/carousel1.jpg" class="d-block w-100" alt="Carousel 1">
+>>>>>>> bb0b3d1c7fd3d8775cc2df380d1ecea18cbd9101
     </div>
     <div class="carousel-item" data-bs-interval="3000">
       <img src="assets/img/carousel2.jpg" class="d-block w-100" alt="Carousel 2">
@@ -34,7 +38,11 @@
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">Mission</h5>
+<<<<<<< HEAD
+                        <p class="card-text">aweqeqwe</p>
+=======
                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+>>>>>>> bb0b3d1c7fd3d8775cc2df380d1ecea18cbd9101
                         <a href="#" class="card-link">Card link</a>
                         <a href="#" class="card-link">Another link</a>
                     </div>

@@ -38,13 +38,13 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                   <td><?php echo $book['ddc'] ?></td>
                   <td><?php echo $book['author'] ?></td>
                   <td><?php echo $borrowed['status'] ?></td>
-                  <td><?php echo date_format(date_create($borrowed['approved_date']), 'F d, Y'); ?></td>
-                  <td><?php echo date_format(date_create($borrowed['return_date']), 'F d, Y'); ?></td>
+                  <td><?php echo $borrowed['approved_date'] ? date_format(date_create($borrowed['approved_date']), 'F d, Y') : '' ?></td>
+                  <td><?php echo $borrowed['return_date'] ? date_format(date_create($borrowed['return_date']), 'F d, Y') : '' ?></td>
                   <td>
                     <form method="post">
                       <input type="hidden" value="returned" name="borrowedStatus">
                       <input type="hidden" value="<?php echo $borrowed['id'] ?>" name="borrowedId">
-                      <input type="submit" <?php echo ($borrowed['status'] == 'returned') ? 'disabled': '' ?>  name="approvedBtn" value="Return" class="btn btn-primary btn-sm">
+                      <input type="submit" <?php echo ($borrowed['status'] == 'returned' || $borrowed['status'] == 'pending') ? 'disabled': '' ?>  name="approvedBtn" value="Return" class="btn btn-primary btn-sm">
                     </form>
                   </td>
                 </tr>
