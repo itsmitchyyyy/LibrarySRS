@@ -25,6 +25,7 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
               <thead>
                 <tr>
                   <th>DDC</th>
+                  <th>Borrower</th>
                   <th>Title</th>
                   <th>Author</th>
                   <th>Status</th>
@@ -48,6 +49,7 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
               ?>
                 <tr>
                   <td><?php echo $book['id']?></td>
+                  <td><?php echo $borrower['first_name'].' '.$borrower['last_name']?></td>
                   <td><?php echo $book['ddc'] ?></td>
                   <td><?php echo $book['author'] ?></td>
                   <td><?php echo $borrowed['status'] ?></td>
