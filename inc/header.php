@@ -48,10 +48,17 @@
             background: #295ba5;
             color: #fff;
         }
+
+        .card-deck {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
     </style>
 </head>
 <body>
 
+<?php $activePage = basename($_SERVER['PHP_SELF'], ".php") ?>
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #295ba5">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
@@ -63,14 +70,17 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link <?= (strpos($activePage, 'index') !== false) ? 'active' : '' ?>" href="index.php">Home</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link <?= (strpos($activePage, 'books') !== false) ? 'active' : '' ?>"  href="books.php">Books</a>
+        </li>
+        <!-- <li class="nav-item">
           <a class="nav-link" href="#">About</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Contact</a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
         </li>

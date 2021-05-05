@@ -4,8 +4,11 @@ include '../connection.php';
 
 if (isset($_GET['id']) && $_GET['type'] == 'first') {
     $book = getRecord('books','id',$_GET['id']);
+    $category = getRecord('categories', 'id', $book['category_id']);
 
-    echo json_encode($book);
+    $data = array_merge($book, array('category' => $category));
+
+    echo json_encode($data);
 }
 
 if (isset($_GET['title']) && $_GET['type'] == 'search') {

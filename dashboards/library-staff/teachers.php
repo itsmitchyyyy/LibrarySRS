@@ -4,14 +4,11 @@
 
 <div class="d-flex flex-row py-4">
   <div class="d-flex flex-fill">
-    <h2>Students</h2>
+    <h2>Teachers</h2>
   </div>
-
- 
-
   <div class="d-flex flex-fill justify-content-end">
       <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-sm btn-primary">
-        <i class="fas fa-user-plus"></i> Add Student
+        <i class="fas fa-user-plus"></i> Add Teachers
       </button>
   </div>
 </div>
@@ -21,16 +18,14 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
   <div class="alert <?php echo (isset($_GET['e'])) ? 'alert-danger' : 'alert-success'?> w-25" role="alert">
     <?php echo (isset($_GET['e'])) ? $_GET['e'] : $_GET['m'] ?>
 </div>
-<?php }
-
-?>
+<?php } ?>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Student</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add Teachers</h5>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -62,13 +57,13 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
           <input type="text" name="contactNumber" class="form-control" id="contactNumberInput" aria-describedby="contactNumberHelp">
         </div>
         <div class="form-group">
-          <label for="course">Course</label>
-          <input type="text" name="course" class="form-control" id="courseInput" aria-describedby="courseHelp">
+          <label for="department">Department</label>
+          <input type="text" name="department" class="form-control" id="departmentInput" aria-describedby="departmentHelp">
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <input type="submit" name="addStudentBtn" class="btn btn-primary" value="Add Student" />
+        <input type="submit" name="addTeacherBtn" class="btn btn-primary" value="Add Teacher" />
       </div>
       </form>
     </div>
@@ -76,23 +71,23 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 </div>
 
 <?php
-  if (isset($_POST['addStudentBtn'])) {
-    $student = addUser(array($_POST['idNumber'],$_POST['emailAddress'],$_POST['firstName'],$_POST['middleName'],$_POST['lastName'],$_POST['contactNumber'],$_POST['course']), 
-    array('id_number','email','first_name','middle_name','last_name','contact_number','course'), 'students', array($_POST['emailAddress'], $_POST['idNumber']));
+  if (isset($_POST['addTeacherBtn'])) {
+    $teacher = addUser(array($_POST['idNumber'],$_POST['emailAddress'],$_POST['firstName'],$_POST['middleName'],$_POST['lastName'],$_POST['contactNumber'],$_POST['department']), 
+    array('id_number','email','first_name','middle_name','last_name','contact_number','department'), 'teachers', array($_POST['emailAddress'], $_POST['idNumber']), 'teachers');
 
-    if ($student == 'emailexist') {
+    if ($teacher == 'emailexist') {
       echo "<script> alert('Email Exist'); </script>";
-    } else if ($student == 'idnumberexist') {
+    } else if ($teacher == 'idnumberexist') {
       echo "<script> alert('Id Number Exist'); </script>";
     } else {
-      if ($student) {
+      if ($teacher) {
         echo "<script> window.location = document.referrer; </script>";
       }
     }
   }
 
 
-  $studentList = getRecordsWithCondition('students','status','active');
+  $teacherList = getRecordsWithCondition('teachers','status','active');
 ?>
 <!-- end Modal -->
 
@@ -101,23 +96,23 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
               <thead>
                 <tr>
                   <th>ID Number</th>
-                  <th>Student Name</th>
+                  <th>Teacher Name</th>
                   <th>Contact Number</th>
-                  <th>Course</th>
+                  <th>Department</th>
                   <th>Email</th>
                   <th>Option</th>
                 </tr>
               </thead>
               <tbody>
-              <?php foreach($studentList as $student) { ?>
+              <?php foreach($teacherList as $teacher) { ?>
                 <tr>
-                  <td><?php echo $student['id_number'] ?></td>
-                  <td><?php echo "{$student['first_name']} {$student['middle_name']}. {$student['last_name']}" ?></td>
-                  <td><?php echo $student['contact_number'] ?></td>
-                  <td><?php echo $student['course'] ?></td>
-                  <td><?php echo $student['email'] ?></td>
+                  <td><?php echo $teacher['id_number'] ?></td>
+                  <td><?php echo "{$teacher['first_name']} {$teacher['middle_name']}. {$teacher['last_name']}" ?></td>
+                  <td><?php echo $teacher['contact_number'] ?></td>
+                  <td><?php echo $teacher['department'] ?></td>
+                  <td><?php echo $teacher['email'] ?></td>
                   <td>
-                    <a href="edit-student.php?id=<?php echo $student['id'] ?>" class="btn btn-primary">Update</a>
+                    <a href="edit-teacher.php?id=<?php echo $teacher['id'] ?>" class="btn btn-primary">Update</a>
                   </td>
                 </tr>
               <?php } ?>
@@ -127,15 +122,17 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 
 
 <?php
-  if (isset($_POST['deleteStudentBtn'])) {
-    $student =  updateRecord(array('disabled',$_POST['studentId']),array('status'),'students','id');
+  if (isset($_POST['deleteTeacherBtn'])) {
+    $student =  updateRecord(array('disabled',$_POST['teacherId']),array('status'),'teachers','id');
    
     if ($student) {
-        echo "<script> window.location = 'students.php?m=Deleted Students'; </script>";
+        echo "<script> window.location = 'teachers.php?m=Deleted Teacher'; </script>";
     }
   }
 ?>
 </main>
 </div>
 </div>
+
+
 <?php include 'inc/footer.php' ?>

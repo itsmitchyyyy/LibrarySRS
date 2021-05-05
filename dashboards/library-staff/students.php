@@ -126,6 +126,7 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
           </div>
 
 
+          
 <?php
   if (isset($_POST['deleteStudentBtn'])) {
     $student =  updateRecord(array('disabled',$_POST['studentId']),array('status'),'students','id');
@@ -138,4 +139,5 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 </main>
 </div>
 </div>
+
 <?php include 'inc/footer.php' ?>

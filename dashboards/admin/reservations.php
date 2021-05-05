@@ -41,8 +41,8 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
               <?php $book = getRecord('books', 'id', $borrowed['book_id']); ?>
               <?php $penalty = getRecord('penalties','id', $borrowed['penalty_id']); ?>
               <?php 
-                if (isset($penalty['due_date']) && (new DateTime() > new DateTime($penalty['due_date']))) {
-                  updateRecord(array('49', $dueDate, $penalty['id']),array('amount'),'penalties','id');
+                if (isset($penalty['due_date']) && (new DateTime() > new DateTime($penalty['due_date']))  && $user['role'] == 'student') {
+                  updateRecord(array('49', $penalty['id']),array('amount'),'penalties','id');
                 }
               
               ?>

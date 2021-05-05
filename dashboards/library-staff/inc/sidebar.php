@@ -11,6 +11,18 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link <?= (strpos($activePage, 'student') !== false) ? 'active' : '' ?>" href="students.php">
+                  <span data-feather="users"></span>
+                  Students 
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link <?= (strpos($activePage, 'teacher') !== false) ? 'active' : '' ?>" href="teachers.php">
+                  <span data-feather="users"></span>
+                  Teachers
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link <?= ($activePage == 'books') ? 'active' : '' ?>" href="books.php">
                   <span data-feather="book"></span>
                   Books

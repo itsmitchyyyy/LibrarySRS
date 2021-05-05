@@ -30,6 +30,8 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                   <th>Author</th>
                   <th>Status</th>
                   <th>Date Borrowed</th>
+                  <th>Due Date</th>
+                  <th>Penalty</th>
                   <th>Options</th>
                 </tr>
               </thead>
@@ -38,12 +40,21 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
               <?php $user = getRecord('users', 'id', $borrowed['user_id']) ?>
               <?php $borrower = getRecord($user['role'], 'id', $user['role_id']); ?>
               <?php $book = getRecord('books', 'id', $borrowed['book_id']); ?>
+              <?php $penalty = getRecord('penalties','id', $borrowed['penalty_id']); ?>
+              <?php 
+                if (isset($penalty['due_date']) && (new DateTime() > new DateTime($penalty['due_date'])) && $user['role'] == 'student') {
+                  updateRecord(array('49', $penalty['id']),array('amount'),'penalties','id');
+                }
+              
+              ?>
                 <tr>
                   <td><?php echo $book['id']?></td>
                   <td><?php echo $book['ddc'] ?></td>
                   <td><?php echo $book['author'] ?></td>
                   <td><?php echo $borrowed['status'] ?></td>
                   <td><?php echo date_format(date_create($borrowed['created_at']), 'F d, Y'); ?></td>
+                  <td><?php echo isset($penalty['due_date']) ? date_format(date_create($penalty['due_date']), 'F d, Y') : ''; ?></td>
+                  <td><?php echo isset($penalty['amount']) ? $penalty['amount'] : 0 ?></td>
                   <td>
                     <form method="post">
                       <input type="hidden" value="approved" name="borrowedStatus">
