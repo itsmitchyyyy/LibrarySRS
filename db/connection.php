@@ -110,6 +110,17 @@ function getRecords($table){
     return $row;
 }
 
+function searchActiveRecords($table, $field, $condition){
+    $conn = connect();
+    $sql = "SELECT * FROM $table WHERE $field like '%".$condition."%' and status = 'published'";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $row = $stmt->fetchAll();
+
+    return $row;
+}
+
+
 function getRecordsWithCondition($table, $field, $condition){
     $conn = connect();
     $sql = "SELECT * FROM $table WHERE $field = ?";

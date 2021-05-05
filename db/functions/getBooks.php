@@ -7,3 +7,15 @@ if (isset($_GET['id']) && $_GET['type'] == 'first') {
 
     echo json_encode($book);
 }
+
+if (isset($_GET['title']) && $_GET['type'] == 'search') {
+    $book = searchActiveRecords('books','ddc',$_GET['title']);
+
+    echo json_encode($book);
+}
+
+if (isset($_GET['id']) && $_GET['type'] == 'filter') {
+    $book = searchActiveRecords('books','category_id',$_GET['id']);
+
+    echo json_encode($book);
+}

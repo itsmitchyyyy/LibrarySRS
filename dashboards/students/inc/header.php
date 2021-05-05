@@ -48,6 +48,12 @@ session_start();
             background: #295ba5;
             color: #fff;
         }
+
+        .card-deck {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
     </style>
 </head>
 <body>

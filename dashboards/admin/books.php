@@ -22,8 +22,9 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
   <div class="alert <?php echo (isset($_GET['e'])) ? 'alert-danger' : 'alert-success'?> w-25" role="alert">
     <?php echo (isset($_GET['e'])) ? $_GET['e'] : $_GET['m'] ?>
 </div>
-<?php }
 
+<?php }
+ $categoryList = getRecords('categories');
 ?>
 
 <!-- Modal -->
@@ -49,6 +50,14 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
         <div class="form-group">
           <label for="description">Description</label>
           <textarea class="form-control" name="description" id="descriptionId" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select class="form-control" name="category" id="categoryInput">
+            <?php foreach($categoryList as $category) { ?>
+              <option value="<?php echo $category['id'] ?>"><?php echo $category['name'] ?></option>
+            <?php } ?>
+          </select>
         </div>
         <div class="form-group">
           <label for="editionNumber">Edition Number</label>
@@ -80,8 +89,8 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 
 <?php
   if (isset($_POST['addBookBtn'])) {
-    $books = addRecord(array($_POST['ddcTitle'],$_POST['author'],$_POST['description'],$_POST['editionNumber'],$_POST['placeOfPublication'],$_POST['publisherName'],$_POST['copyright']), 
-    array('ddc','author','description','edition_number','place_of_publication','publisher','copyright'), 'books');
+    $books = addRecord(array($_POST['ddcTitle'],$_POST['author'],$_POST['description'],$_POST['category'],$_POST['editionNumber'],$_POST['placeOfPublication'],$_POST['publisherName'],$_POST['copyright']), 
+    array('ddc','author','description','category_id','edition_number','place_of_publication','publisher','copyright'), 'books');
 
     if ($books) {
       echo "<script> window.location = document.referrer; </script>";
