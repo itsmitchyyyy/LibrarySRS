@@ -76,6 +76,28 @@ function loginStudent($username, $password) {
     }
 }
 
+function loginStaff($username, $password) {
+    $conn = connect();
+    $sql = "SELECT *, library_staffs.id as staffId, users.id as userId, users.created_at as userCreatedAt, users.updated_at as userUpdatedAt,
+     library_staffs.created_at as staffcreatedAt, library_staffs.updated_at as staffUpdatedAt FROM users JOIN library_staffs ON library_staffs.id = users.role_id WHERE users.username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(array($username));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($stmt->rowCount() > 0){
+        if (password_verify($password, $row['password'])) {
+            $_SESSION['user'] = $row;
+            $_SESSION['role'] = 'library_staff';
+            echo "<script> window.location='dashboards/library-staff/index.php'; </script>"; 
+            exit;
+        } else {
+            echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+        }
+    }else{
+        echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+    }
+}
+
+
 function getStudent($id) {
     $conn = connect();
     $sql = "SELECT *, students.id as studentId, users.id as userId, users.created_at as userCreatedAt, users.updated_at as userUpdatedAt,

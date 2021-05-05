@@ -63,10 +63,8 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 
 <?php
   if (isset($_POST['approvedBtn'])) {
-    $book =  updateRecord(array($_POST['borrowedStatus'], date('Y-m-d H:i:s'), $_SESSION['role'], $_POST['borrowedId'])
-    ,array('status','approved_date','approved_by'),'reservations','id');
-    // $book =  updateRecord(array($_POST['borrowedStatus'], date('Y-m-d H:i:s'), $_POST['borrowedId'])
-    // ,array('status','approved_date'),'reservations','id');
+    $book =  updateRecord(array($_POST['borrowedStatus'], date('Y-m-d H:i:s'), $_SESSION['user']['staffId'], $_SESSION['user']['first_name'], $_POST['borrowedId'])
+    ,array('status','approved_date','approver_id','approved_by'),'reservations','id');
     
     if ($book) {
         echo "<script> window.location = 'reservations.php?m=Updated Reservation'; </script>";

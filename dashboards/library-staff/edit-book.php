@@ -34,7 +34,7 @@
           <label for="category">Category</label>
           <select class="form-control" name="category" id="categoryInput">
             <?php foreach($categories as $category) { ?>
-              <option value="<?php echo $category['id'] ?>" <?php ($category['id'] == $book['category_id']) ? 'selected' : '' ?>><?php echo $category['name'] ?></option>
+              <option value="<?php echo $category['id'] ?>" <?php echo ($category['id'] == $book['category_id']) ? 'selected' : '' ?>><?php echo $category['name'] ?></option>
             <?php } ?>
           </select>
         </div>
@@ -64,8 +64,8 @@
 
 <?php
   if (isset($_POST['updateBookBtn'])) {
-    $book =  updateRecord(array($_POST['ddcTitle'],$_POST['author'],$_POST['description'],$_POST['editionNumber'],$_POST['placeOfPublication'],$_POST['publisherName'],$_POST['copyright'], $_GET['id'])
-    ,array('ddc','author','description','edition_number','place_of_publication','publisher','copyright'),'books','id');
+    $book =  updateRecord(array($_POST['ddcTitle'],$_POST['author'],$_POST['description'],$_POST['category'],$_POST['editionNumber'],$_POST['placeOfPublication'],$_POST['publisherName'],$_POST['copyright'], $_GET['id'])
+    ,array('ddc','author','description','category_id','edition_number','place_of_publication','publisher','copyright'),'books','id');
     
     if ($book) {
         echo "<script> window.location = 'books.php?m=Updated Book'; </script>";

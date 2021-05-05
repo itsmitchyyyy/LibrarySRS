@@ -1,11 +1,11 @@
 <?php include 'inc/header.php' ?>
 
 <main class="justify-content-center d-flex align-items-center h-100">
-    <form class="w-25" method="post" action="db/functions/login.php">
+    <form class="w-25" method="post">
         <div class="d-flex justify-content-center mb-5"><h4>Library Staff Login</h4></div>
         <div class="form-floating mb-3">
-            <input type="email" name="email" class="form-control form-control-sm" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
+            <input type="text" name="username" class="form-control form-control-sm" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Username</label>
         </div>
         <div class="form-floating">
             <input type="password" name="password" class="form-control form-control-sm" id="floatingPassword" placeholder="Password">
@@ -19,5 +19,13 @@
         </div>
     </form>
 </main>
+
+
+<?php
+    if (isset($_POST['loginBtn'])) {
+        loginStaff($_POST['username'], $_POST['password']);
+    }
+
+?>
 
 <?php include 'inc/footer.php' ?>
