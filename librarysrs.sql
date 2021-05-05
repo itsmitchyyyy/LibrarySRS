@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2021 at 06:48 PM
+-- Generation Time: May 06, 2021 at 12:34 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.4.14
 
@@ -31,6 +31,7 @@ CREATE TABLE `books` (
   `id` int(11) NOT NULL,
   `ddc` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
+  `category_id` int(11) NOT NULL,
   `author` varchar(255) NOT NULL,
   `edition_number` varchar(255) NOT NULL,
   `place_of_publication` varchar(255) NOT NULL,
@@ -45,11 +46,12 @@ CREATE TABLE `books` (
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`id`, `ddc`, `description`, `author`, `edition_number`, `place_of_publication`, `publisher`, `copyright`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Book title', 'Descriptionaaaajjj', 'Author', '1212', 'bisag asa', 'bisag aaaa', '12', 'published', '2021-04-20 14:57:04', '2021-04-20 15:30:33'),
-(2, 'zxc', 'zxczxczxc', 'zxc', '12121', 'asasd', 'asasdasd', '111', 'disabled', '2021-04-20 15:03:09', '2021-04-20 15:45:18'),
-(3, 'Book title', 'qqq', 'Author', '12121', 'asasd', 'bisag aaaa', '12', 'disabled', '2021-04-20 15:45:32', '2021-04-20 15:54:08'),
-(4, 'zxczxczxczxqqqqq', 'casdasd', 'Author', '12121', 'asasd', 'asasdasd', '12', 'disabled', '2021-04-20 15:46:01', '2021-04-20 16:21:07');
+INSERT INTO `books` (`id`, `ddc`, `description`, `category_id`, `author`, `edition_number`, `place_of_publication`, `publisher`, `copyright`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Book title', 'Descriptionaaaajjj', 2, 'Author', '1212', 'bisag asa', 'bisag aaaa', '12', 'published', '2021-04-20 14:57:04', '2021-05-05 11:05:42'),
+(2, 'zxc', 'zxczxczxc', 0, 'zxc', '12121', 'asasd', 'asasdasd', '111', 'disabled', '2021-04-20 15:03:09', '2021-04-20 15:45:18'),
+(3, 'Book title', 'qqq', 0, 'Author', '12121', 'asasd', 'bisag aaaa', '12', 'disabled', '2021-04-20 15:45:32', '2021-04-20 15:54:08'),
+(4, 'zxczxczxczxqqqqq', 'casdasd', 0, 'Author', '12121', 'asasd', 'asasdasd', '12', 'disabled', '2021-04-20 15:46:01', '2021-04-20 16:21:07'),
+(5, 'With Category', 'With Category Description', 2, 'With Category Author', '1212121212', 'bisag asa', 'si aaaa', '12', 'published', '2021-05-05 10:38:48', '2021-05-05 11:05:39');
 
 -- --------------------------------------------------------
 
@@ -95,6 +97,13 @@ CREATE TABLE `library_staffs` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `library_staffs`
+--
+
+INSERT INTO `library_staffs` (`id`, `id_number`, `first_name`, `middle_name`, `last_name`, `contact_number`, `course`, `email`, `status`, `created_at`, `updated_at`) VALUES
+(254, 123456, 'sven', 'q', 'santul', 912412323, 'BSIT', 'sven_puerto@yahoo.com.ph', 'active', '2021-05-05 10:55:26', '2021-05-05 10:55:26');
+
 -- --------------------------------------------------------
 
 --
@@ -103,12 +112,25 @@ CREATE TABLE `library_staffs` (
 
 CREATE TABLE `penalties` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
   `amount` varchar(255) NOT NULL,
   `due_date` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `penalties`
+--
+
+INSERT INTO `penalties` (`id`, `amount`, `due_date`, `created_at`, `updated_at`) VALUES
+(1, '0', NULL, '2021-05-05 21:50:23', '2021-05-05 21:50:23'),
+(2, '0', NULL, '2021-05-05 21:51:18', '2021-05-05 21:51:18'),
+(3, '0', NULL, '2021-05-05 21:51:51', '2021-05-05 21:51:51'),
+(4, '49', '2021-04-30 16:00:00', '2021-05-05 21:52:17', '2021-05-05 22:15:26'),
+(5, '0', NULL, '2021-05-05 22:16:16', '2021-05-05 22:16:16'),
+(6, '0', NULL, '2021-05-05 22:28:48', '2021-05-05 22:28:48'),
+(7, '0', NULL, '2021-05-05 22:29:35', '2021-05-05 22:29:35'),
+(8, '0', NULL, '2021-05-05 22:29:59', '2021-05-05 22:29:59');
 
 -- --------------------------------------------------------
 
@@ -120,8 +142,11 @@ CREATE TABLE `reservations` (
   `id` int(11) NOT NULL,
   `book_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `approver_id` int(11) NOT NULL,
+  `approved_by` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
   `return_date` timestamp NULL DEFAULT NULL,
+  `penalty_id` int(11) DEFAULT NULL,
   `approved_date` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -131,8 +156,12 @@ CREATE TABLE `reservations` (
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`id`, `book_id`, `user_id`, `status`, `return_date`, `approved_date`, `created_at`, `updated_at`) VALUES
-(1, 1, 259, 'returned', '2021-04-21 10:46:56', '2021-04-21 10:41:28', '2021-04-21 14:51:47', '2021-04-21 14:51:47');
+INSERT INTO `reservations` (`id`, `book_id`, `user_id`, `approver_id`, `approved_by`, `status`, `return_date`, `penalty_id`, `approved_date`, `created_at`, `updated_at`) VALUES
+(1, 1, 259, 254, 'sven', 'approved', '2021-04-21 10:46:56', 0, '2021-05-05 05:09:12', '2021-04-21 14:51:47', '2021-04-21 14:51:47'),
+(2, 5, 259, 0, 'admin', 'approved', NULL, 0, '2021-05-05 05:11:51', '2021-05-05 11:11:15', '2021-05-05 11:11:15'),
+(6, 5, 259, 0, 'admin', 'approved', NULL, 4, '2021-05-01 16:08:16', '2021-05-05 21:52:17', '2021-05-05 21:52:17'),
+(7, 5, 259, 0, '', 'pending', NULL, 5, NULL, '2021-05-05 22:16:16', '2021-05-05 22:16:16'),
+(8, 5, 265, 0, '', 'pending', NULL, 8, NULL, '2021-05-05 22:29:59', '2021-05-05 22:29:59');
 
 -- --------------------------------------------------------
 
@@ -214,6 +243,13 @@ CREATE TABLE `teachers` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `teachers`
+--
+
+INSERT INTO `teachers` (`id`, `id_number`, `first_name`, `middle_name`, `last_name`, `email`, `department`, `contact_number`, `status`, `created_at`, `updated_at`) VALUES
+(4, 2147483647, 'svenz', 'q', 'santul', 'sven_puerto@yahoo.com.ph', 'BSIT', '912412323', 'active', '2021-05-05 22:20:49', '2021-05-05 22:28:36');
+
 -- --------------------------------------------------------
 
 --
@@ -237,7 +273,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `role_id`, `status`, `created_at`, `updated_at`) VALUES
 (259, '12345651', '$2y$10$DwMwPDLAxdXNOoX/RuYEDeisaan7S62LNU3JizfnsOZCXv8xmouvC', 'students', 253, 'active', '2021-04-21 14:23:39', '2021-04-21 14:23:39'),
-(261, 'test', '$2y$10$oORWuL6cOV5L4b/1dvJfOeMhdjxmSwfr3PtHprqS4PAZnBgcYcN9G', 'admin', 0, 'active', '2021-04-21 16:40:18', '2021-04-21 16:40:18');
+(263, 'test', '$2y$10$2P4scTxcxUsuvO3SPCVVP.gnHKj9Wn.Oy3QN/M36s59zrVXnNAopy', 'admin', 0, 'active', '2021-05-05 10:33:20', '2021-05-05 10:33:20'),
+(264, '123456', '$2y$10$vX92iXteF/jKnzq66EG.9u5Z5VH3tXsAxjVu3akRVB5igJsvC/sCu', 'staff', 254, 'active', '2021-05-05 10:55:26', '2021-05-05 10:55:26'),
+(265, '2147483647', '$2y$10$K9nfuNiFq10xjLPgvkX33eixTVKmTGOiKxvy0E8.QZj1.PX3EVl1.', 'teachers', 4, 'active', '2021-05-05 22:20:49', '2021-05-05 22:20:49');
 
 --
 -- Indexes for dumped tables
@@ -311,7 +349,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -323,19 +361,19 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `library_staffs`
 --
 ALTER TABLE `library_staffs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=254;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=255;
 
 --
 -- AUTO_INCREMENT for table `penalties`
 --
 ALTER TABLE `penalties`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -359,13 +397,13 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=262;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=266;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
