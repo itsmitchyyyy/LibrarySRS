@@ -97,11 +97,42 @@ function loginStaff($username, $password) {
     }
 }
 
+function loginTeacher($username, $password) {
+    $conn = connect();
+    $sql = "SELECT *, teachers.id as teacherId, users.id as userId, users.created_at as userCreatedAt, users.updated_at as userUpdatedAt,
+     teachers.created_at as teachercreatedAt, teachers.updated_at as teacherUpdatedAt FROM users JOIN teachers ON teachers.id = users.role_id WHERE users.username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(array($username));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($stmt->rowCount() > 0){
+        if (password_verify($password, $row['password'])) {
+            $_SESSION['user'] = $row;
+            $_SESSION['role'] = 'teacher';
+            echo "<script> window.location='dashboards/teachers/index.php'; </script>"; 
+            exit;
+        } else {
+            echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+        }
+    }else{
+        echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+    }
+}
+
 
 function getStudent($id) {
     $conn = connect();
     $sql = "SELECT *, students.id as studentId, users.id as userId, users.created_at as userCreatedAt, users.updated_at as userUpdatedAt,
      students.created_at as studentcreatedAt, students.updated_at as studentUpdatedAt FROM users JOIN students ON students.id = users.role_id WHERE users.id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(array($id));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row;
+}
+
+function getTeacher($id) {
+    $conn = connect();
+    $sql = "SELECT *, teachers.id as teacherId, users.id as userId, users.created_at as userCreatedAt, users.updated_at as userUpdatedAt,
+     teachers.created_at as teachercreatedAt, teachers.updated_at as teacherUpdatedAt FROM users JOIN teachers ON teachers.id = users.role_id WHERE users.id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->execute(array($id));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);

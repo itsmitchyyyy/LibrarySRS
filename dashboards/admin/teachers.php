@@ -98,7 +98,7 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                   <th>ID Number</th>
                   <th>Teacher Name</th>
                   <th>Contact Number</th>
-                  <th>Course</th>
+                  <th>Department</th>
                   <th>Email</th>
                   <th>Option</th>
                 </tr>

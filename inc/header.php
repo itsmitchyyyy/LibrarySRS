@@ -114,7 +114,8 @@
                                 </form>
 
                                 <div class="mt-4 fw-bold">
-                                    <a href="#">Library Staff Login Form</a>
+                                    <a href="librarystaff.php">Library Staff Login Form</a> |
+                                    <a href="teacher.php">Teacher Login Form</a>
                                 </div>
                             </div>
                         </div>

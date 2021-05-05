@@ -81,7 +81,7 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
       <div class="modal-body">
         <p>Do you want to borrow this book?</p>
         <input type="hidden" name="bookId" value="0" id="bookId">
-        <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'student') { ?>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'teacher') { ?>
             <input type="hidden" name="userId" value="<?php echo $_SESSION['user']['userId'] ?>" id="userId">
         <?php } ?>
       </div>
