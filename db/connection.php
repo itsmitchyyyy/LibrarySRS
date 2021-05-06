@@ -173,6 +173,15 @@ function searchActiveRecords($table, $field, $condition){
     return $row;
 }
 
+function searchRecordTeacherOrStudent($table, $condition){
+    $conn = connect();
+    $sql = "SELECT * FROM $table WHERE CONCAT(first_name,' ',last_name) like '%".$condition."%'";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $row = $stmt->fetchAll();
+
+    return $row;
+}
 
 function getRecordsWithCondition($table, $field, $condition){
     $conn = connect();

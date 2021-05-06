@@ -20,6 +20,12 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 </div>
 <?php } ?>
 
+
+<div class="flex-row d-flex mb-2">
+  <input type="text"  placeholder="Teacher Name"  class=" w-25 form-control" id="searchTeacher">
+</div>
+
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -91,8 +97,13 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 ?>
 <!-- end Modal -->
 
+
+<div id="isSearching" style="display:none">
+  <p>Searching teachers...</p>
+</div>
+
           <div class="table-responsive">
-            <table class="table table-striped table-sm">
+            <table class="table table-striped table-sm" id="tableContainer">
               <thead>
                 <tr>
                   <th>ID Number</th>
@@ -103,7 +114,7 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                   <th>Option</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="tableBody">
               <?php foreach($teacherList as $teacher) { ?>
                 <tr>
                   <td><?php echo $teacher['id_number'] ?></td>
@@ -168,5 +179,53 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
         var teacherIdInput = deleteTeacherModal.querySelector('#teacherId');
         teacherIdInput.value = teacherId;
     });
+
+    // var url = 'http://localhost/librarysrs-master/db/functions';
+ var url = 'http://localhost/librarysrs/db/functions';
+    var searchTeacherInput = document.getElementById('searchTeacher');
+    
+    searchTeacherInput.addEventListener('keyup', () => {
+          var teacherSearchUrl = url + '/getTeacherOrStudent.php?role=teachers&title=' + event.target.value + '&type=search';
+          searchBook(event.target.value, teacherSearchUrl)
+        }, false);
+
+async function searchBook(title, teacherUrl) {
+          var isSearching = document.getElementById('isSearching');
+          var tableContainer = document.getElementById('tableContainer');
+          var tableBody = document.getElementById('tableBody');
+
+          isSearching.style.display = 'block';
+          tableContainer.style.display = 'none';
+          tableBody.innerHTML = '';
+
+          let response = await fetch(teacherUrl);
+          response  = await response.json();
+
+          var searchTableData = '';
+
+          setTimeout(function () {
+            let options = {  month: 'long', day: 'numeric', year: 'numeric' };
+            if (response.length) {
+              response.map((item) => {
+                searchTableData += `<tr>
+                  <td>` + item.id_number + `</td>
+                  <td>` + item.first_name + item.middle_name + item.last_name + `</td>
+                  <td>` + item.contact_number + `</td>
+                  <td>` + item.department + `</td>
+                  <td>` + item.email + `</td>
+                  <td>
+                    <a href="edit-teacher.php?id=`+ item.id + `" class="btn btn-primary">Update</a>
+                  </td>
+                </tr>`;
+              });
+          } else {
+            searchTableData += `No search results found`;
+          }
+
+            isSearching.style.display = 'none';
+            tableBody.innerHTML = searchTableData;
+            tableContainer.style.display = 'table';
+          }, 1000);
+        } 
 </script>
 <?php include 'inc/footer.php' ?>

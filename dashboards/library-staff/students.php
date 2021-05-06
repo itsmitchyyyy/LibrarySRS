@@ -25,6 +25,11 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 
 ?>
 
+
+<div class="flex-row d-flex mb-2">
+  <input type="text"  placeholder="Student Name"  class=" w-25 form-control" id="searchStudent">
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -96,8 +101,13 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 ?>
 <!-- end Modal -->
 
+
+<div id="isSearching" style="display:none">
+  <p>Searching students...</p>
+</div>
+
           <div class="table-responsive">
-            <table class="table table-striped table-sm">
+            <table class="table table-striped table-sm" id="tableContainer">
               <thead>
                 <tr>
                   <th>ID Number</th>
@@ -108,7 +118,7 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                   <th>Option</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="tableBody">
               <?php foreach($studentList as $student) { ?>
                 <tr>
                   <td><?php echo $student['id_number'] ?></td>
@@ -140,4 +150,53 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
 </div>
 </div>
 
+<script>
+ // var url = 'http://localhost/librarysrs-master/db/functions';
+ var url = 'http://localhost/librarysrs/db/functions';
+    var searchStudentInput = document.getElementById('searchStudent');
+    
+    searchStudentInput.addEventListener('keyup', () => {
+          var studentSearchUrl = url + '/getTeacherOrStudent.php?role=students&title=' + event.target.value + '&type=search';
+          searchBook(event.target.value, studentSearchUrl)
+        }, false);
+
+async function searchBook(title, studentUrl) {
+          var isSearching = document.getElementById('isSearching');
+          var tableContainer = document.getElementById('tableContainer');
+          var tableBody = document.getElementById('tableBody');
+
+          isSearching.style.display = 'block';
+          tableContainer.style.display = 'none';
+          tableBody.innerHTML = '';
+
+          let response = await fetch(studentUrl);
+          response  = await response.json();
+
+          var searchTableData = '';
+
+          setTimeout(function () {
+            let options = {  month: 'long', day: 'numeric', year: 'numeric' };
+            if (response.length) {
+              response.map((item) => {
+                searchTableData += `<tr>
+                  <td>` + item.id_number + `</td>
+                  <td>` + item.first_name + item.middle_name + item.last_name + `</td>
+                  <td>` + item.contact_number + `</td>
+                  <td>` + item.course + `</td>
+                  <td>` + item.email + `</td>
+                  <td>
+                    <a href="edit-student.php?id=`+ item.id + `" class="btn btn-primary">Update</a>
+                  </td>
+                </tr>`;
+              });
+          } else {
+            searchTableData += `No search results found`;
+          }
+
+            isSearching.style.display = 'none';
+            tableBody.innerHTML = searchTableData;
+            tableContainer.style.display = 'table';
+          }, 1000);
+        } 
+</script>
 <?php include 'inc/footer.php' ?>

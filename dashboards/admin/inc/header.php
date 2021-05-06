@@ -38,6 +38,12 @@ if (!isset($_SESSION['role']) || isset($_SESSION['role']) && $_SESSION['role'] !
             background: #295ba5;
             color: #fff;
         }
+
+        .card-deck {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
     </style>
 </head>
 <body>
