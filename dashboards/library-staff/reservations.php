@@ -47,6 +47,14 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                   updateRecord(array('49', $penalty['id']),array('amount'),'penalties','id');
                 }
               
+                
+                $date1 = new DateTime($borrowed['updated_at']);
+                $date2 = new DateTime();
+                $diff = $date2->diff($date1);
+
+                if ($borrowed['status'] == 'pending' &&  $diff->h > 5 && $user['role'] == 'student') {
+                  updateRecord(array('expired', $borrowed['id']),array('status'),'reservations','id');
+                }
               ?>
                 <tr>
                   <td><?php echo $book['id']?></td>

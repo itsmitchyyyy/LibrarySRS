@@ -193,6 +193,17 @@ function getRecordsWithCondition($table, $field, $condition){
     return $row;
 }
 
+function getRecordsWithConditionNot($table, $field, $condition){
+    $conn = connect();
+    $sql = "SELECT * FROM $table WHERE $field <> ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(array($condition));
+    $row = $stmt->fetchAll();
+
+    return $row;
+}
+
+
 function getRecord($table, $field, $id) {
     $conn = connect();
     $sql = "SELECT * FROM $table WHERE $field = ?";

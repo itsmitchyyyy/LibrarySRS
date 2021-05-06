@@ -3,7 +3,9 @@
 <?php include '../../db/connection.php' ?>
 
 <?php
-$borrowedList = getRecords('reservations');
+$borrowedList = getRecordsWithConditionNot('reservations','status','expired');
+
+
 ?>
 <div class="d-flex flex-row py-4">
   <div class="d-flex flex-fill">
@@ -45,7 +47,14 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                 if (isset($penalty['due_date']) && (new DateTime() > new DateTime($penalty['due_date']))  && $user['role'] == 'student') {
                   updateRecord(array('49', $penalty['id']),array('amount'),'penalties','id');
                 }
-              
+
+                $date1 = new DateTime($borrowed['updated_at']);
+                $date2 = new DateTime();
+                $diff = $date2->diff($date1);
+
+                if ($borrowed['status'] == 'pending' &&  $diff->h > 5 && $user['role'] == 'student') {
+                  updateRecord(array('expired', $borrowed['id']),array('status'),'reservations','id');
+                }
               ?>
                 <tr>
                   <td><?php echo $book['id']?></td>

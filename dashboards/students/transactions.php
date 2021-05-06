@@ -40,6 +40,14 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                 if (isset($penalty['due_date']) && (new DateTime() > new DateTime($penalty['due_date']))) {
                   updateRecord(array('49', $penalty['id']),array('amount'),'penalties','id');
                 }
+                
+                $date1 = new DateTime($borrowed['created_at']);
+                $date2 = new DateTime();
+                $diff = $date2->diff($date1);
+
+                if ($borrowed['status'] == 'pending' &&  $diff->h > 5 && $user['role'] == 'student') {
+                  updateRecord(array('expired', $borrowed['id']),array('status'),'reservations','id');
+                }
               
               ?>
                 <tr>
@@ -55,7 +63,11 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                     <form method="post">
                       <input type="hidden" value="returned" name="borrowedStatus">
                       <input type="hidden" value="<?php echo $borrowed['id'] ?>" name="borrowedId">
+                      <?php if ($borrowed['status'] != 'expired') { ?>
                       <input type="submit" <?php echo ($borrowed['status'] == 'returned' || $borrowed['status'] == 'pending') ? 'disabled': '' ?>  name="approvedBtn" value="Return" class="btn btn-primary btn-sm">
+                      <?php } else { ?>
+                      <input type="submit" name="approvedBtn" value="pending" class="btn btn-primary btn-sm">
+                      <?php } ?>
                     </form>
                   </td>
                 </tr>
