@@ -29,7 +29,6 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                   <th>Returned Date</th>
                   <th>Due Date</th>
                   <th>Penalty</th>
-                  <th>Options</th>
                 </tr>
               </thead>
               <tbody>
@@ -54,39 +53,16 @@ if(isset($_GET['e']) || isset($_GET['m'])) { ?>
                   <td><?php echo $book['id']?></td>
                   <td><?php echo $book['ddc'] ?></td>
                   <td><?php echo $book['author'] ?></td>
-                  <td><?php echo $borrowed['status'] ?></td>
+                  <td style="color: <?php echo ($borrowed['status'] == 'returned') ? 'blue'  : (($borrowed['status'] == 'pending') ? 'red' : 'green') ?>"><?php echo $borrowed['status'] ?></td>
                   <td><?php echo $borrowed['approved_date'] ? date_format(date_create($borrowed['approved_date']), 'F d, Y') : '' ?></td>
                   <td><?php echo $borrowed['return_date'] ? date_format(date_create($borrowed['return_date']), 'F d, Y') : '' ?></td>
                   <td><?php echo isset($penalty['due_date']) ? date_format(date_create($penalty['due_date']), 'F d, Y') : ''; ?></td>
                   <td><?php echo isset($penalty['amount']) ? $penalty['amount'] : 0 ?></td>
-                  <td>
-                    <form method="post">
-                      <input type="hidden" value="returned" name="borrowedStatus">
-                      <input type="hidden" value="<?php echo $borrowed['id'] ?>" name="borrowedId">
-                      <?php if ($borrowed['status'] != 'expired') { ?>
-                      <input type="submit" <?php echo ($borrowed['status'] == 'returned' || $borrowed['status'] == 'pending') ? 'disabled': '' ?>  name="approvedBtn" value="Return" class="btn btn-primary btn-sm">
-                      <?php } else { ?>
-                      <input type="submit" name="approvedBtn" value="pending" class="btn btn-primary btn-sm">
-                      <?php } ?>
-                    </form>
-                  </td>
                 </tr>
               <?php } ?>
               </tbody>
             </table>
           </div>
           </div>
-
-
-          <?php
-  if (isset($_POST['approvedBtn'])) {
-    $book =  updateRecord(array($_POST['borrowedStatus'], date('Y-m-d H:i:s'), $_POST['borrowedId'])
-    ,array('status','return_date'),'reservations','id');
-    
-    if ($book) {
-        echo "<script> window.location = 'transactions.php?m=Updated Transactions'; </script>";
-    }
-  }
-?>
 
 <?php include 'inc/footer.php' ?>
