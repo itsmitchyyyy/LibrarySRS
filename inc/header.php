@@ -107,6 +107,12 @@
                             <div class="loginRightFormContainer align-items-center">
                                 <form class="w-50" method="post">
                                     <div class="d-flex justify-content-center mb-5"><h4>Member Login</h4></div>
+                                    <?php
+                                        if(isset($_GET['e'])) { ?>
+                                        <div class="alert  alert-danger" role="alert">
+                                            <?php echo  $_GET['e']; ?>
+                                        </div>
+                                    <?php } ?>
                                     <div class="form-floating mb-3">
                                         <input type="text" name="username" class="form-control form-control-sm" id="floatingInput" placeholder="name@example.com">
                                         <label for="floatingInput">Username</label>
@@ -143,6 +149,16 @@
     }
 
 ?>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const isModalOpen = urlParams.get('modal');
+
+    if(isModalOpen == 'open') {
+    var loginModal = new bootstrap.Modal(document.getElementById('loginModal'))
+    loginModal.show();
+    }
+</script>
 
 
 

@@ -46,10 +46,10 @@ function loginAdmin($username, $password) {
             echo "<script> window.location='dashboards/admin/index.php'; </script>";
             exit;
         } else {
-            echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+            echo "<script> window.location = document.referrer + '?e=Invalid Username and Password'; </script>";
         }
     }else{
-        echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+        echo "<script> window.location = document.referrer + '?e=Invalid Username and Password'; </script>";
     }
 }
 
@@ -69,10 +69,10 @@ function loginStudent($username, $password) {
             echo "<script> window.location='dashboards/students/index.php'; </script>"; 
             exit;
         } else {
-            echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+            echo "<script> window.location = document.referrer + '?e=Invalid Username and Password&modal=open'; </script>";
         }
     }else{
-        echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+        echo "<script> window.location = document.referrer +  '?e=Invalid Username and Password&modal=open'; </script>";
     }
 }
 
@@ -90,10 +90,10 @@ function loginStaff($username, $password) {
             echo "<script> window.location='dashboards/library-staff/index.php'; </script>"; 
             exit;
         } else {
-            echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+            echo "<script> window.location = document.referrer + '?e=Invalid Username and Password'; </script>";
         }
     }else{
-        echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+        echo "<script> window.location = document.referrer + '?e=Invalid Username and Password'; </script>";
     }
 }
 
@@ -111,10 +111,10 @@ function loginTeacher($username, $password) {
             echo "<script> window.location='dashboards/teachers/index.php'; </script>"; 
             exit;
         } else {
-            echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+            echo "<script> window.location = document.referrer + '?e=Invalid Username and Password'; </script>";
         }
     }else{
-        echo "<script> window.location = document.referrer + '?e=Invalid Username and Password; </script>";
+        echo "<script> window.location = document.referrer + '?e=Invalid Username and Password'; </script>";
     }
 }
 
